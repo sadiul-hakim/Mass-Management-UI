@@ -1,0 +1,38 @@
+.main-content {
+    height: 100vh;
+}
+
+.list-group,
+.list-group-item {
+    background-color: inherit !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+.list-group-item:hover {
+    background-color: #999 !important;
+}
+
+.list-group-item{
+    cursor: pointer;
+}
+
+.list-group-item:first-child{
+    border-top: none;
+}
+
+
+a {
+    text-decoration: none I !important;
+}
+
+body {
+    background-color: #eeeded !important;
+    font-family: "Overlock", sans-serif !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+}
+
+.rightSide__content{
+    float: 1 !important;
+}
