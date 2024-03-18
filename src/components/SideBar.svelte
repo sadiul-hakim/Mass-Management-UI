@@ -13,10 +13,10 @@
     <li class="list-group-item text-light" on:click={() => dispatch("home")}>
       <i class="bi bi-house-door-fill"></i> Home
     </li>
-    <li class="list-group-item text-light">
+    <li class="list-group-item text-light" on:click={() => dispatch("income")}>
       <i class="bi bi-calendar-plus-fill"></i> Income
     </li>
-    <li class="list-group-item text-light">
+    <li class="list-group-item text-light" on:click={() => dispatch("cost")}>
       <i class="bi bi-clipboard-minus-fill"></i> Cost
     </li>
     <li

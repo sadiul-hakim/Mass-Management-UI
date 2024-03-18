@@ -51,7 +51,7 @@
 </script>
 
 <div class="card h-100 p-3">
-  <h3 class="mb-2">Meal Type</h3>
+  <h3 class="mb-2">Income</h3>
   <table class="table">
     <thead>
       <tr>

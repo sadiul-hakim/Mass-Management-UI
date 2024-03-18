@@ -19,6 +19,8 @@
         on:userRole={() => handleNavigation("User Role")}
         on:userStatus={() => handleNavigation("User Status")}
         on:period={() => handleNavigation("Period")}
+        on:income={() => handleNavigation("Income")}
+        on:cost={() => handleNavigation("Cost")}
       />
     </div>
     <div class="col-md-9 p-0 m-0 d-flex flex-column">
@@ -26,6 +28,3 @@
     </div>
   </div>
 </main>
-
-<style>
-</style>

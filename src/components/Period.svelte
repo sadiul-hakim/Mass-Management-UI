@@ -1,10 +1,58 @@
+<script>
+  import { onMount } from "svelte";
+  let periods = [];
+  let periodData = {
+    id: 0,
+    name: "",
+    description: "",
+  };
+  // Variables ends here
+  onMount(async () => {
+    loadAll();
+  });
+  // on page load functionality
+  async function handleSubmit() {
+    let response = await fetch("http://localhost:9090/period/v1/add", {
+      method: "POST",
+      body: JSON.stringify(periodData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    await loadAll();
+    clearData();
+  }
+  // saving of types
+
+  async function loadAll() {
+    let response = await fetch("http://localhost:9090/period/v1/get-all");
+    periods = await response.json();
+  }
+  // loading all types
+  async function deleteOne(event, id) {
+    let response = await fetch(`http://localhost:9090/period/v1/delete/${id}`, {
+      method: "DELETE",
+    });
+    await loadAll();
+  }
+  // delete type
+  function clearData() {
+    periodData = {
+      id: 0,
+      name: "",
+      description: "",
+    };
+  }
+  // clearing local form data
+</script>
+
 <div class="card h-100 p-3">
   <h3 class="mb-2">Period</h3>
   <table class="table">
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Period</th>
+        <th scope="col">Name</th>
         <th scope="col">Description</th>
         <th scope="col"
           ><button
@@ -16,33 +64,18 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Breakfast</td>
-        <td>This period means the meal of morning period.</td>
-        <td
-          ><i class="bi bi-pencil-square"></i>&nbsp;
-          <i class="bi bi-trash3"></i></td
-        >
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Lunch</td>
-        <td>This period means the meal of noon period.</td>
-        <td
-          ><i class="bi bi-pencil-square"></i>&nbsp;
-          <i class="bi bi-trash3"></i></td
-        >
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Dinner</td>
-        <td>This period means the meal of night period.</td>
-        <td
-          ><i class="bi bi-pencil-square"></i>&nbsp;
-          <i class="bi bi-trash3"></i></td
-        >
-      </tr>
+      {#each periods as period, index (period.id)}
+        <tr>
+          <th scope="row">{index + 1}</th>
+          <td>{period.name}</td>
+          <td>{period.description}</td>
+          <td
+            ><i class="bi bi-pencil-square"></i>&nbsp;
+            <i class="bi bi-trash3" on:click={(e) => deleteOne(e, period.id)}
+            ></i></td
+          >
+        </tr>
+      {/each}
     </tbody>
   </table>
 </div>
@@ -69,19 +102,29 @@
         ></button>
       </div>
       <div class="modal-body">
-        <form action="#">
+        <form on:submit|preventDefault={handleSubmit}>
           <div>
             <label for="title">Period</label>
-            <input type="text" name="period" id="period" class="form-control" />
+            <input
+              type="text"
+              name="name"
+              id="name"
+              class="form-control"
+              bind:value={periodData.name}
+            />
           </div>
           <br />
           <div>
             <label for="description">Description</label>
-            <textarea name="description" id="description" class="form-control"
+            <textarea
+              name="description"
+              id="description"
+              class="form-control"
+              bind:value={periodData.description}
             ></textarea>
           </div>
           <br />
-          <button type="button" class="btn btn-success">Save</button>
+          <button type="submit" class="btn btn-success">Save</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -92,3 +135,9 @@
     </div>
   </div>
 </div>
+
+<style>
+  i {
+    cursor: pointer;
+  }
+</style>

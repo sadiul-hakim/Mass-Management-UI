@@ -4,6 +4,8 @@
   import UserRole from "./UserRole.svelte";
   import UserStatus from "./UserStatus.svelte";
   import Period from "./Period.svelte";
+  import Income from "./Income.svelte";
+  import Cost from "./Cost.svelte";
 
   export let navigation = "Home";
 
@@ -26,6 +28,10 @@
     <UserStatus />
   {:else if navigation === "Period"}
     <Period />
+  {:else if navigation === "Income"}
+    <Income />
+  {:else if navigation === "Cost"}
+    <Cost />
   {:else}
     <h1>Home</h1>
   {/if}
