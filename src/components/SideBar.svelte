@@ -37,7 +37,7 @@
     <li class="list-group-item text-light">
       <i class="bi bi-person-circle"></i> Manager
     </li>
-    <li class="list-group-item text-light">
+    <li class="list-group-item text-light" on:click={() => dispatch("border")}>
       <i class="bi bi-people-fill"></i> Border
     </li>
     <li

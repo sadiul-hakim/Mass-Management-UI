@@ -21,6 +21,7 @@
         on:period={() => handleNavigation("Period")}
         on:income={() => handleNavigation("Income")}
         on:cost={() => handleNavigation("Cost")}
+        on:border={() => handleNavigation("Border")}
       />
     </div>
     <div class="col-md-9 p-0 m-0 d-flex flex-column">

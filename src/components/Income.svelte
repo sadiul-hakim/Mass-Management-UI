@@ -1,50 +1,62 @@
 <script>
   import { onMount } from "svelte";
   let types = [];
-  let typeData = {
+  let users = [];
+  let incomes = [];
+  let incomeData = {
     id: 0,
-    name: "",
-    description: "",
+    type: 0,
+    userId: 0,
+    amount: 0,
   };
   // Variables ends here
   onMount(async () => {
     loadAll();
+    loadAllTypes();
+    loadAllUsers();
   });
   // on page load functionality
   async function handleSubmit() {
-    let response = await fetch("http://localhost:9090/meal-type/v1/add", {
+    let response = await fetch("http://localhost:9090/income/v1/add", {
       method: "POST",
-      body: JSON.stringify(typeData),
+      body: JSON.stringify(incomeData),
       headers: {
         "Content-Type": "application/json",
       },
     });
     await loadAll();
     clearData();
-    console.log(response.status);
   }
   // saving of types
 
   async function loadAll() {
-    let response = await fetch("http://localhost:9090/meal-type/v1/get-all");
+    let response = await fetch("http://localhost:9090/income/v1/get-all");
+    incomes = await response.json();
+  }
+  async function loadAllTypes() {
+    let response = await fetch(
+      "http://localhost:9090/transaction-type/v1/get-all"
+    );
     types = await response.json();
+  }
+  async function loadAllUsers() {
+    let response = await fetch("http://localhost:9090/user/v1/get-all");
+    users = await response.json();
   }
   // loading all types
   async function deleteOne(event, id) {
-    let response = await fetch(
-      `http://localhost:9090/meal-type/v1/delete/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
+    let response = await fetch(`http://localhost:9090/income/v1/delete/${id}`, {
+      method: "DELETE",
+    });
     await loadAll();
   }
   // delete type
   function clearData() {
-    typeData = {
+    incomeData = {
       id: 0,
-      name: "",
-      description: "",
+      type: 0,
+      userId: 0,
+      amount: 0,
     };
   }
   // clearing local form data
@@ -56,8 +68,10 @@
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Description</th>
+        <th scope="col">Type</th>
+        <th scope="col">Border</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Date</th>
         <th scope="col"
           ><button
             class="btn btn-primary"
@@ -68,11 +82,13 @@
       </tr>
     </thead>
     <tbody>
-      {#each types as type, index (type.id)}
+      {#each incomes as income, index (income.id)}
         <tr>
           <th scope="row">{index + 1}</th>
-          <td>{type.name}</td>
-          <td>{type.description}</td>
+          <td>{income.type.title}</td>
+          <td>{income.user.name}</td>
+          <td>{income.amount}</td>
+          <td>{income.date}</td>
           <td
             ><i class="bi bi-pencil-square"></i>&nbsp;
             <i
@@ -110,24 +126,40 @@
       <div class="modal-body">
         <form on:submit|preventDefault={handleSubmit}>
           <div>
-            <label for="title">Name</label>
-            <input
-              type="text"
-              name="name"
-              id="name"
+            <label for="type">Type</label>
+            <select
+              name="type"
               class="form-control"
-              bind:value={typeData.name}
-            />
+              bind:value={incomeData.type}
+            >
+              {#each types as type (type.id)}
+                <option value={type.id}>{type.title}</option>
+              {/each}
+            </select>
           </div>
           <br />
           <div>
-            <label for="description">Description</label>
-            <textarea
-              name="description"
-              id="description"
+            <label for="user">Border</label>
+            <select
+              name="user"
               class="form-control"
-              bind:value={typeData.description}
-            ></textarea>
+              bind:value={incomeData.userId}
+            >
+              {#each users as user (user.id)}
+                <option value={user.id}>{user.name}</option>
+              {/each}
+            </select>
+          </div>
+          <br />
+          <div>
+            <label for="amount">Amount</label>
+            <input
+              type="number"
+              name="amount"
+              id="amount"
+              class="form-control"
+              bind:value={incomeData.amount}
+            />
           </div>
           <br />
           <button type="submit" class="btn btn-success">Save</button>

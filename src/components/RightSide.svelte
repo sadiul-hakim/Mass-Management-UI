@@ -6,6 +6,7 @@
   import Period from "./Period.svelte";
   import Income from "./Income.svelte";
   import Cost from "./Cost.svelte";
+  import Border from "./Border.svelte";
 
   export let navigation = "Home";
 
@@ -32,6 +33,8 @@
     <Income />
   {:else if navigation === "Cost"}
     <Cost />
+  {:else if navigation === "Border"}
+    <Border />
   {:else}
     <h1>Home</h1>
   {/if}
