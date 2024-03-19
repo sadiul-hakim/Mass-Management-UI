@@ -7,6 +7,7 @@
   import Income from "./Income.svelte";
   import Cost from "./Cost.svelte";
   import Border from "./Border.svelte";
+  import Home from "./Home.svelte";
 
   export let navigation = "Home";
 
@@ -18,7 +19,7 @@
 </div>
 <div class="rightSide__content p-4">
   {#if navigation === "Home"}
-    <h1>Home</h1>
+    <Home />
   {:else if navigation === "Transaction Type"}
     <TransactionType />
   {:else if navigation === "Meal Type"}
@@ -36,6 +37,6 @@
   {:else if navigation === "Border"}
     <Border />
   {:else}
-    <h1>Home</h1>
+    <Home />
   {/if}
 </div>
