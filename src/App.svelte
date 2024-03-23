@@ -22,9 +22,12 @@
         on:income={() => handleNavigation("Income")}
         on:cost={() => handleNavigation("Cost")}
         on:border={() => handleNavigation("Border")}
+        on:manager={() => handleNavigation("Manager")}
+        on:meal={() => handleNavigation("Meal")}
+        on:report={() => handleNavigation("Report")}
       />
     </div>
-    <div class="col-md-9 p-0 m-0 d-flex flex-column">
+    <div class="col-md-9 p-0 m-0 d-flex flex-column h-100">
       <RightSide {navigation} />
     </div>
   </div>

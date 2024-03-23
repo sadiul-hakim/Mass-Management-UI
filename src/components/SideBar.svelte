@@ -25,7 +25,7 @@
     >
       <i class="bi bi-card-checklist"></i> Transaction Type
     </li>
-    <li class="list-group-item text-light">
+    <li class="list-group-item text-light" on:click={() => dispatch("meal")}>
       <i class="bi bi-basket-fill"></i> Meal
     </li>
     <li
@@ -34,7 +34,7 @@
     >
       <i class="bi bi-card-list"></i> Meal Type
     </li>
-    <li class="list-group-item text-light">
+    <li class="list-group-item text-light" on:click={() => dispatch("manager")}>
       <i class="bi bi-person-circle"></i> Manager
     </li>
     <li class="list-group-item text-light" on:click={() => dispatch("border")}>
@@ -55,14 +55,11 @@
     <li class="list-group-item text-light" on:click={() => dispatch("period")}>
       <i class="bi bi-alarm-fill"></i> Period
     </li>
-    <li class="list-group-item text-light">
+    <li class="list-group-item text-light" on:click={() => dispatch("report")}>
       <i class="bi bi-file-earmark-excel-fill"></i> Report
     </li>
     <li class="list-group-item text-light">
       <i class="bi bi-chat-left-text"></i> SMS
-    </li>
-    <li class="list-group-item text-light">
-      <i class="bi bi-info-square-fill"></i> Request
     </li>
   </ul>
 </div>

@@ -55,7 +55,7 @@
   // clearing local form data
 </script>
 
-<div class="card h-100 p-3">
+<div class="card h-100 overflow-y-auto p-3">
   <h3 class="mb-2">Transaction Type</h3>
   <table class="table">
     <thead>

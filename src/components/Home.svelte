@@ -26,19 +26,23 @@
   }
 </script>
 
-<div class="h-100 p-3">
+<div class="h-100 overflow-y-auto p-3">
   <div class="row d-flex justify-content-between">
-    <div class="card col-md-3 m-1 text-center p-2">
+    <div class="card col-md-2 m-1 text-center p-2">
       <h4>Total Income</h4>
       <h5>{totals.income}</h5>
     </div>
-    <div class="card col-md-3 m-1 text-center p-2">
+    <div class="card col-md-2 m-1 text-center p-2">
       <h4>Total Cost</h4>
       <h5>{totals.cost}</h5>
     </div>
-    <div class="card col-md-3 m-1 text-center p-2">
-      <h4>Total Borders</h4>
-      <h5>{totals.user}</h5>
+    <div class="card col-md-2 m-1 text-center p-2">
+      <h4>Total Active Borders</h4>
+      <h5>{totals.active_user}</h5>
+    </div>
+    <div class="card col-md-2 m-1 text-center p-2">
+      <h4>Total Inactive Borders</h4>
+      <h5>{totals.inactive_user}</h5>
     </div>
   </div>
   <div class="row card p-3 mt-4">
