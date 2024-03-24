@@ -1,6 +1,19 @@
 <script>
   import { onMount } from "svelte";
 
+  import { Authorization } from "../store/stores";
+  import { push } from "svelte-spa-router";
+
+  let authorization = {};
+
+  Authorization.subscribe((auth) => {
+    authorization = auth;
+  });
+
+  if (authorization === undefined) {
+    push("/login");
+  }
+
   let report = {};
   let bordersInfo = [];
 
@@ -9,8 +22,14 @@
   });
 
   async function loadReport() {
-    let response = await fetch("http://localhost:9090/report/v1/generate");
+    let response = await fetch("http://localhost:9090/report/v1/generate", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     report = await response.json();
+    console.log(report);
     bordersInfo = report.borders;
   }
 </script>

@@ -1,34 +1,33 @@
 <script>
-  import SideBar from "./components/SideBar.svelte";
-  import RightSide from "./components/RightSide.svelte";
+  import { onMount } from "svelte";
+  import Router from "svelte-spa-router";
+  import MassManagement from "./MassManagement.svelte";
+  import Login from "./Login.svelte";
+  import NotFount from "./NotFount.svelte";
+  import { push } from "svelte-spa-router";
 
-  let navigation = "Home";
+  import { Authorization } from "./store/stores";
 
-  function handleNavigation(nav) {
-    navigation = nav;
-  }
+  onMount(() => {
+    let authorization = localStorage.getItem("authorization");
+    if (
+      authorization !== undefined ||
+      authorization !== null ||
+      authorization.length !== 0
+    ) {
+      Authorization.set(JSON.parse(authorization));
+    } else {
+      push("/login");
+    }
+  });
+
+  let routes = {
+    "/": MassManagement,
+    "/login": Login,
+    "*": NotFount,
+  };
 </script>
 
-<main class="container-fluid main-content">
-  <div class="row h-100">
-    <div class="col-md-3 bg-dark text-white h-100 p-0 m-0 d-flex flex-column">
-      <SideBar
-        on:home={() => handleNavigation("Home")}
-        on:transactionType={() => handleNavigation("Transaction Type")}
-        on:mealType={() => handleNavigation("Meal Type")}
-        on:userRole={() => handleNavigation("User Role")}
-        on:userStatus={() => handleNavigation("User Status")}
-        on:period={() => handleNavigation("Period")}
-        on:income={() => handleNavigation("Income")}
-        on:cost={() => handleNavigation("Cost")}
-        on:border={() => handleNavigation("Border")}
-        on:manager={() => handleNavigation("Manager")}
-        on:meal={() => handleNavigation("Meal")}
-        on:report={() => handleNavigation("Report")}
-      />
-    </div>
-    <div class="col-md-9 p-0 m-0 d-flex flex-column h-100">
-      <RightSide {navigation} />
-    </div>
-  </div>
+<main>
+  <Router {routes} />
 </main>

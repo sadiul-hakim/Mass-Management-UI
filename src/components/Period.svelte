@@ -1,5 +1,19 @@
 <script>
   import { onMount } from "svelte";
+
+  import { Authorization } from "../store/stores";
+  import { push } from "svelte-spa-router";
+
+  let authorization = {};
+
+  Authorization.subscribe((auth) => {
+    authorization = auth;
+  });
+
+  if (authorization === undefined) {
+    push("/login");
+  }
+
   let periods = [];
   let periodData = {
     id: 0,
@@ -17,6 +31,7 @@
       body: JSON.stringify(periodData),
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + authorization.token,
       },
     });
     await loadAll();
@@ -25,13 +40,21 @@
   // saving of types
 
   async function loadAll() {
-    let response = await fetch("http://localhost:9090/period/v1/get-all");
+    let response = await fetch("http://localhost:9090/period/v1/get-all", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     periods = await response.json();
   }
   // loading all types
   async function deleteOne(event, id) {
     let response = await fetch(`http://localhost:9090/period/v1/delete/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
     });
     await loadAll();
   }

@@ -1,5 +1,19 @@
 <script>
   import { onMount } from "svelte";
+
+  import { Authorization } from "../store/stores";
+  import { push } from "svelte-spa-router";
+
+  let authorization = {};
+
+  Authorization.subscribe((auth) => {
+    authorization = auth;
+  });
+
+  if (authorization === undefined) {
+    push("/login");
+  }
+
   let meals = [];
   let users = [];
   let mealTypes = [];
@@ -27,6 +41,7 @@
       body: JSON.stringify(mealData),
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + authorization.token,
       },
     });
     await loadAllMeals();
@@ -36,6 +51,9 @@
   async function deleteOne(event, id) {
     let response = await fetch(`http://localhost:9090/meal/v1/delete/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
     });
     await loadAllMeals();
   }
@@ -52,22 +70,42 @@
 
   // load all user;
   async function loadAllMeals() {
-    let response = await fetch("http://localhost:9090/meal/v1/get-all");
+    let response = await fetch("http://localhost:9090/meal/v1/get-all", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     meals = await response.json();
   }
 
   async function loadAllUsers() {
-    let response = await fetch("http://localhost:9090/user/v1/get-all");
+    let response = await fetch("http://localhost:9090/user/v1/get-all", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     users = await response.json();
   }
 
   async function loadAllMealTypes() {
-    let response = await fetch("http://localhost:9090/meal-type/v1/get-all");
+    let response = await fetch("http://localhost:9090/meal-type/v1/get-all", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     mealTypes = await response.json();
   }
 
   async function loadAllPeriods() {
-    let response = await fetch("http://localhost:9090/period/v1/get-all");
+    let response = await fetch("http://localhost:9090/period/v1/get-all", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     periods = await response.json();
   }
 </script>

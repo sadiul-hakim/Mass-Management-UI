@@ -1,5 +1,19 @@
 <script>
   import { onMount } from "svelte";
+
+  import { Authorization } from "../store/stores";
+  import { push } from "svelte-spa-router";
+
+  let authorization = {};
+
+  Authorization.subscribe((auth) => {
+    authorization = auth;
+  });
+
+  if (authorization === undefined) {
+    push("/login");
+  }
+
   let users = [];
   let role = {};
   let statuses = [];
@@ -7,6 +21,7 @@
     id: 0,
     name: "",
     phone: "",
+    email: "",
     password: "",
     address: "",
     role: 0,
@@ -25,6 +40,7 @@
       body: JSON.stringify(userData),
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + authorization.token,
       },
     });
     await loadAll();
@@ -33,26 +49,43 @@
   // saving of types
 
   async function loadAll() {
-    let response = await fetch("http://localhost:9090/user/v1/get-all");
+    let response = await fetch("http://localhost:9090/user/v1/get-all", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     users = await response.json();
   }
 
   async function loadBorderRole() {
     let response = await fetch(
-      "http://localhost:9090/user-role/v1/get-by-role/Border"
+      "http://localhost:9090/user-role/v1/get-by-role/Border",
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + authorization.token,
+        },
+      }
     );
     role = await response.json();
     userData.role = role.id;
   }
 
   async function loadAllStatus() {
-    let response = await fetch("http://localhost:9090/user-status/v1/get-all");
+    let response = await fetch("http://localhost:9090/user-status/v1/get-all", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     statuses = await response.json();
   }
   // loading all types
   async function deleteOne(event, id) {
     let response = await fetch(`http://localhost:9090/user/v1/delete/${id}`, {
       method: "DELETE",
+      Authorization: "Bearer " + authorization.token,
     });
     await loadAll();
   }
@@ -62,6 +95,7 @@
       id: 0,
       name: "",
       phone: "",
+      email: "",
       password: "",
       address: "",
       role: userData.role,
@@ -79,6 +113,7 @@
         <th scope="col">#</th>
         <th scope="col">Name</th>
         <th scope="col">Phone</th>
+        <th scope="col">Email</th>
         <th scope="col">Role</th>
         <th scope="col">Status</th>
         <th scope="col">Address</th>
@@ -98,6 +133,7 @@
           <th scope="row">{index + 1}</th>
           <td>{user.name}</td>
           <td>{user.phone}</td>
+          <td>{user.email}</td>
           <td>{user.role.role}</td>
           <td>{user.status.status}</td>
           <td>{user.address}</td>
@@ -155,6 +191,17 @@
               id="phone"
               class="form-control"
               bind:value={userData.phone}
+            />
+          </div>
+          <br />
+          <div>
+            <label for="phone">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="form-control"
+              bind:value={userData.email}
             />
           </div>
           <br />

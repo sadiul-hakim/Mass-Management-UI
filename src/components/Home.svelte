@@ -1,8 +1,22 @@
 <script>
   import { onMount } from "svelte";
+  import { Authorization } from "../store/stores";
+  import { push } from "svelte-spa-router";
+
+  let authorization = {};
+
+  Authorization.subscribe((auth) => {
+    authorization = auth;
+  });
+
+  if (authorization === undefined) {
+    push("/login");
+  }
+
   let totals = {};
   let borderInfo = [];
   let tableHeaders = [];
+
   // Variables ends here
   onMount(async () => {
     loadTotals();
@@ -11,14 +25,23 @@
   // saving of types
 
   async function loadTotals() {
-    let response = await fetch("http://localhost:9090/home/v1/totals");
+    let response = await fetch("http://localhost:9090/home/v1/totals", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     totals = await response.json();
   }
 
   async function loadBorderInfo() {
-    let response = await fetch("http://localhost:9090/home/v1/border-info");
+    let response = await fetch("http://localhost:9090/home/v1/border-info", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     borderInfo = await response.json();
-    console.log(borderInfo);
     if (borderInfo.length !== 0) {
       let info = borderInfo[0];
       tableHeaders = Object.keys(info);

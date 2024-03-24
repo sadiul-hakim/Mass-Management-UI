@@ -1,5 +1,19 @@
 <script>
   import { onMount } from "svelte";
+
+  import { Authorization } from "../store/stores";
+  import { push } from "svelte-spa-router";
+
+  let authorization = {};
+
+  Authorization.subscribe((auth) => {
+    authorization = auth;
+  });
+
+  if (authorization === undefined) {
+    push("/login");
+  }
+
   let types = [];
   let typeData = {
     id: 0,
@@ -19,6 +33,7 @@
         body: JSON.stringify(typeData),
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + authorization.token,
         },
       }
     );
@@ -30,7 +45,13 @@
 
   async function loadAll() {
     let response = await fetch(
-      "http://localhost:9090/transaction-type/v1/get-all"
+      "http://localhost:9090/transaction-type/v1/get-all",
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + authorization.token,
+        },
+      }
     );
     types = await response.json();
   }
@@ -40,6 +61,9 @@
       `http://localhost:9090/transaction-type/v1/delete/${id}`,
       {
         method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + authorization.token,
+        },
       }
     );
     await loadAll();

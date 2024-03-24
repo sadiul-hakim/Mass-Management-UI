@@ -1,5 +1,8 @@
 <script>
   import { onMount } from "svelte";
+  import { Authorization } from "../store/stores";
+  import { push } from "svelte-spa-router";
+
   import TransactionType from "./TransactionType.svelte";
   import MealType from "./MealType.svelte";
   import UserRole from "./UserRole.svelte";
@@ -12,10 +15,20 @@
   import Manager from "./Manager.svelte";
   import Meal from "./Meal.svelte";
   import Report from "./Report.svelte";
+  import Mail from "./Mail.svelte";
 
   export let navigation = "Home";
 
   let manager = {};
+  let authorization = {};
+
+  Authorization.subscribe((auth) => {
+    authorization = auth;
+  });
+
+  if (authorization === undefined) {
+    push("/login");
+  }
 
   onMount(async () => {
     loadManager();
@@ -28,12 +41,37 @@
   // loading section
   async function loadManager() {
     let roleResponse = await fetch(
-      "http://localhost:9090/user-role/v1/get-by-role/Manager"
+      "http://localhost:9090/user-role/v1/get-by-role/Manager",
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + authorization.token,
+        },
+      }
     );
+
+    if (roleResponse.status !== 200) {
+      return;
+    }
+
     let managerRole = await roleResponse.json();
     let response = await fetch(
-      `http://localhost:9090/user/v1/get-by-role/${managerRole.id}`
+      `http://localhost:9090/user/v1/get-by-role/${managerRole.id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + authorization.token,
+        },
+      }
     );
+
+    if (response.status === 200) {
+      manager = {
+        name: "Manager",
+      };
+      return;
+    }
+
     let managerArr = await response.json();
     manager = managerArr[0];
   }
@@ -67,6 +105,8 @@
     <Meal />
   {:else if navigation === "Report"}
     <Report />
+  {:else if navigation === "Mail"}
+    <Mail />
   {:else}
     <Home />
   {/if}

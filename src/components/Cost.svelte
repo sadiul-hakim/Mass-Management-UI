@@ -1,5 +1,19 @@
 <script>
   import { onMount } from "svelte";
+
+  import { Authorization } from "../store/stores";
+  import { push } from "svelte-spa-router";
+
+  let authorization = {};
+
+  Authorization.subscribe((auth) => {
+    authorization = auth;
+  });
+
+  if (authorization === undefined) {
+    push("/login");
+  }
+
   let types = [];
   let costs = [];
   let costData = {
@@ -19,6 +33,7 @@
       body: JSON.stringify(costData),
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + authorization.token,
       },
     });
     await loadAll();
@@ -28,14 +43,25 @@
   // saving of types
 
   async function loadAll() {
-    let response = await fetch("http://localhost:9090/cost/v1/get-all");
+    let response = await fetch("http://localhost:9090/cost/v1/get-all", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     costs = await response.json();
     console.log(costs);
   }
 
   async function loadAllTypes() {
     let response = await fetch(
-      "http://localhost:9090/transaction-type/v1/get-all"
+      "http://localhost:9090/transaction-type/v1/get-all",
+      {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + authorization.token,
+        },
+      }
     );
     types = await response.json();
   }
@@ -43,6 +69,7 @@
   async function deleteOne(event, id) {
     let response = await fetch(`http://localhost:9090/cost/v1/delete/${id}`, {
       method: "DELETE",
+      Authorization: "Bearer " + authorization.token,
     });
     await loadAll();
   }

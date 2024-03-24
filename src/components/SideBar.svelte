@@ -58,8 +58,8 @@
     <li class="list-group-item text-light" on:click={() => dispatch("report")}>
       <i class="bi bi-file-earmark-excel-fill"></i> Report
     </li>
-    <li class="list-group-item text-light">
-      <i class="bi bi-chat-left-text"></i> SMS
+    <li class="list-group-item text-light" on:click={() => dispatch("mail")}>
+      <i class="bi bi-chat-left-text"></i> Mail
     </li>
   </ul>
 </div>
