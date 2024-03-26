@@ -4,6 +4,7 @@
   import MassManagement from "./MassManagement.svelte";
   import Login from "./Login.svelte";
   import NotFount from "./NotFount.svelte";
+  import Settings from "./Settings.svelte";
   import { push } from "svelte-spa-router";
 
   import { Authorization } from "./store/stores";
@@ -24,6 +25,7 @@
   let routes = {
     "/": MassManagement,
     "/login": Login,
+    "/settings": Settings,
     "*": NotFount,
   };
 </script>

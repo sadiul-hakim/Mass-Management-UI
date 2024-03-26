@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
+  import { login_url, settings_url } from "../util/apis";
 
   import TransactionType from "./TransactionType.svelte";
   import MealType from "./MealType.svelte";
@@ -27,7 +28,7 @@
   });
 
   if (authorization === undefined) {
-    push("/login");
+    push(login_url);
   }
 
   onMount(async () => {
@@ -65,7 +66,7 @@
       }
     );
 
-    if (response.status === 200) {
+    if (response.status !== 200) {
       manager = {
         name: "Manager",
       };
@@ -75,10 +76,42 @@
     let managerArr = await response.json();
     manager = managerArr[0];
   }
+
+  function logout() {
+    Authorization.set(undefined);
+    localStorage.setItem("authorization", "");
+    push(login_url);
+  }
+
+  function goToSettings() {
+    push(settings_url);
+  }
 </script>
 
-<div class="header p-4 bg-light">
+<div class="header p-4 bg-light d-flex justify-content-between">
   <h2>Manager, {manager.name}</h2>
+  <ul class="navbar-nav mb-2 mb-lg-0">
+    <li class="nav-item dropdown">
+      <a
+        class="nav-link dropdown-toggle"
+        href="#"
+        role="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <i class="bi bi-gear-wide-connected"></i>
+      </a>
+      <ul class="dropdown-menu">
+        <li class="dropdown-item" on:click={goToSettings}>
+          <i class="bi bi-gear"></i> Settings
+        </li>
+        <li><hr class="dropdown-divider" /></li>
+        <li class="dropdown-item" on:click={logout}>
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </li>
+      </ul>
+    </li>
+  </ul>
 </div>
 <div class="p-4 h-100 overflow-y-hidden">
   {#if navigation === "Home"}

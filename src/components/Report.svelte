@@ -35,6 +35,12 @@
 </script>
 
 <div class="card h-100 overflow-y-auto p-3">
+  <div class="my-1 d-flex justify-content-end">
+    <button class="btn btn-dark me-2">Save And Clean</button>
+    <button class="btn btn-dark" title="Download PDF"
+      ><i class="bi bi-filetype-pdf"></i></button
+    >
+  </div>
   <h3 class="mb-2">Report</h3>
   <table class="table">
     <thead>

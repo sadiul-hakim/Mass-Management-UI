@@ -143,7 +143,7 @@
             ><i class="bi bi-pencil-square"></i>&nbsp;
             <i
               class="bi bi-trash3"
-              on:click={(event) => deleteOne(event, income.id)}
+              on:click={(event) => deleteOne(event, meal.id)}
             ></i></td
           >
         </tr>
