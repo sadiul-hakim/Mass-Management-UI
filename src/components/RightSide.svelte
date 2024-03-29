@@ -17,6 +17,7 @@
   import Meal from "./Meal.svelte";
   import Report from "./Report.svelte";
   import Mail from "./Mail.svelte";
+  import OldReport from "./OldReport.svelte";
 
   export let navigation = "Home";
 
@@ -34,10 +35,6 @@
   onMount(async () => {
     loadManager();
   });
-
-  async function managerChangedEvent() {
-    await loadManager();
-  }
 
   // loading section
   async function loadManager() {
@@ -133,13 +130,15 @@
   {:else if navigation === "Border"}
     <Border />
   {:else if navigation === "Manager"}
-    <Manager {manager} on:managerChanged={managerChangedEvent} />
+    <Manager {manager} />
   {:else if navigation === "Meal"}
     <Meal />
   {:else if navigation === "Report"}
     <Report />
   {:else if navigation === "Mail"}
     <Mail />
+  {:else if navigation === "OldReport"}
+    <OldReport />
   {:else}
     <Home />
   {/if}

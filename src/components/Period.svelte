@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { toasts, ToastContainer, FlatToast } from "svelte-toasts";
 
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
@@ -56,6 +57,11 @@
         Authorization: "Bearer " + authorization.token,
       },
     });
+
+    if (response.status !== 200) {
+      let msg = await response.json();
+      showToast(msg.error);
+    }
     await loadAll();
   }
   // delete type
@@ -67,6 +73,23 @@
     };
   }
   // clearing local form data
+
+  // Toast Message
+  const showToast = (text) => {
+    const toast = toasts.add({
+      title: "Transaction Type",
+      description: text,
+      duration: 10000, // 0 or negative to avoid auto-remove
+      placement: "top-right",
+      theme: "dark",
+      type: "danger",
+      onClick: () => {},
+      onRemove: () => {},
+      // component: BootstrapToast, // allows to override toast component/template per toast
+    });
+
+    // toast.remove()
+  };
 </script>
 
 <div class="card h-100 overflow-y-auto p-3">
@@ -158,6 +181,11 @@
     </div>
   </div>
 </div>
+
+<ToastContainer placement="bottom-right" let:data>
+  <FlatToast {data} />
+  <!-- Provider template for your toasts -->
+</ToastContainer>
 
 <style>
   i {

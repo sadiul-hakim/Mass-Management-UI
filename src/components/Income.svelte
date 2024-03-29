@@ -123,13 +123,13 @@
           <td>{income.user.name}</td>
           <td>{income.amount}</td>
           <td>{income.date}</td>
-          <td
-            ><i class="bi bi-pencil-square"></i>&nbsp;
-            <i
-              class="bi bi-trash3"
+          <td>
+            <button
+              class="btn btn-danger"
               on:click={(event) => deleteOne(event, income.id)}
-            ></i></td
-          >
+              ><i class="bi bi-trash3"></i></button
+            >
+          </td>
         </tr>
       {/each}
     </tbody>

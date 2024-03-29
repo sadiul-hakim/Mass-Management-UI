@@ -9,7 +9,7 @@
     authorization = auth;
   });
 
-  if (authorization === undefined) {
+  if (!authorization) {
     push("/login");
   }
 

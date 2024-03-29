@@ -1,8 +1,14 @@
 <script>
   import { onMount } from "svelte";
+  import { toasts, ToastContainer, FlatToast } from "svelte-toasts";
 
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
+  import {
+    domain_api,
+    export_pdf_api,
+    report_save_and_clean_api,
+  } from "../util/apis";
 
   let authorization = {};
 
@@ -16,6 +22,9 @@
 
   let report = {};
   let bordersInfo = [];
+  let reportData = {
+    report: {},
+  };
 
   onMount(async () => {
     loadReport();
@@ -29,15 +38,81 @@
       },
     });
     report = await response.json();
-    console.log(report);
     bordersInfo = report.borders;
+    reportData = {
+      report,
+    };
   }
+
+  // actions
+
+  async function saveAndClean() {
+    let response = await fetch(domain_api + report_save_and_clean_api, {
+      method: "POST",
+      body: JSON.stringify(reportData),
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      showToast();
+    }
+  }
+
+  async function exportPDF() {
+    let response = await fetch(domain_api + export_pdf_api, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
+    let blob = await response.blob();
+
+    // Create a new URL for the blob
+    const url = window.URL.createObjectURL(blob);
+    // Create a link element
+    const a = document.createElement("a");
+    // Set the href and download attributes for the link
+    a.href = url;
+    a.download = "report.pdf"; // Provide the file name here
+    // Append the link to the body
+    document.body.appendChild(a);
+    // Trigger the download by simulating a click on the link
+    a.click();
+    // Clean up by revoking the object URL and removing the link
+    window.URL.revokeObjectURL(url);
+    a.remove();
+  }
+
+  // Toast
+  // Toast Message
+  const showToast = () => {
+    const toast = toasts.add({
+      title: "Report",
+      description: "This report is saved and Database is cleaned.",
+      duration: 10000, // 0 or negative to avoid auto-remove
+      placement: "top-right",
+      theme: "dark",
+      type: "success",
+      onClick: () => {},
+      onRemove: () => {},
+      // component: BootstrapToast, // allows to override toast component/template per toast
+    });
+
+    // toast.remove()
+  };
 </script>
 
 <div class="card h-100 overflow-y-auto p-3">
   <div class="my-1 d-flex justify-content-end">
-    <button class="btn btn-dark me-2">Save And Clean</button>
-    <button class="btn btn-dark" title="Download PDF"
+    <button
+      class="btn btn-dark me-2"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal">Save And Clean</button
+    >
+    <button class="btn btn-dark" title="Download PDF" on:click={exportPDF}
       ><i class="bi bi-filetype-pdf"></i></button
     >
   </div>
@@ -94,4 +169,46 @@
       {/each}
     </tbody>
   </table>
+</div>
+
+<!-- Toast Message -->
+
+<ToastContainer placement="bottom-right" let:data>
+  <FlatToast {data} />
+  <!-- Provider template for your toasts -->
+</ToastContainer>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Warning</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">Are you sure that you want to clean?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+          >Close</button
+        >
+        <button
+          type="button"
+          class="btn btn-primary"
+          on:click={saveAndClean}
+          data-bs-dismiss="modal">Yes</button
+        >
+      </div>
+    </div>
+  </div>
 </div>

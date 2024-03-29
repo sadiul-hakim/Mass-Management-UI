@@ -38,7 +38,6 @@
     });
     await loadAll();
     clearData();
-    console.log(response.status);
   }
   // saving of types
 
@@ -50,7 +49,6 @@
       },
     });
     costs = await response.json();
-    console.log(costs);
   }
 
   async function loadAllTypes() {
@@ -109,13 +107,13 @@
           <td>{cost.type.title}</td>
           <td>{cost.amount}</td>
           <td>{cost.date}</td>
-          <td
-            ><i class="bi bi-pencil-square"></i>&nbsp;
-            <i
-              class="bi bi-trash3"
+          <td>
+            <button
+              class="btn btn-danger"
               on:click={(event) => deleteOne(event, cost.id)}
-            ></i></td
-          >
+              ><i class="bi bi-trash3"></i></button
+            >
+          </td>
         </tr>
       {/each}
     </tbody>

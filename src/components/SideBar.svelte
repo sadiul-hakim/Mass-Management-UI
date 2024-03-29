@@ -58,6 +58,12 @@
     <li class="list-group-item text-light" on:click={() => dispatch("report")}>
       <i class="bi bi-file-earmark-excel-fill"></i> Report
     </li>
+    <li
+      class="list-group-item text-light"
+      on:click={() => dispatch("oldReport")}
+    >
+      <i class="bi bi-list-columns-reverse"></i> Old Report
+    </li>
     <li class="list-group-item text-light" on:click={() => dispatch("mail")}>
       <i class="bi bi-chat-left-text"></i> Mail
     </li>

@@ -26,6 +26,7 @@
         on:meal={() => handleNavigation("Meal")}
         on:report={() => handleNavigation("Report")}
         on:mail={() => handleNavigation("Mail")}
+        on:oldReport={() => handleNavigation("OldReport")}
       />
     </div>
     <div class="col-md-9 p-0 m-0 d-flex flex-column h-100">

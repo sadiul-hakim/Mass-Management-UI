@@ -1,8 +1,9 @@
 <script>
-  import { onMount, createEventDispatcher } from "svelte";
+  import { onMount } from "svelte";
 
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
+  import { login_url } from "../util/apis";
 
   let authorization = {};
 
@@ -24,8 +25,6 @@
     period: 0,
     date: "",
   };
-
-  let dispatch = createEventDispatcher();
 
   onMount(async () => {
     loadBorders();
@@ -59,10 +58,7 @@
         },
       }
     );
-    let data = await response.json(0);
-    console.log(data);
-    loadBorders();
-    dispatch("managerChanged");
+    logout();
   }
 
   async function handleSubmit() {
@@ -104,7 +100,6 @@
       },
     });
     plans = await response.json();
-    console.log(plans);
   }
   async function loadBorders() {
     let roleResponse = await fetch(
@@ -127,6 +122,13 @@
       }
     );
     borders = await response.json();
+  }
+
+  // logout
+  function logout() {
+    Authorization.set(undefined);
+    localStorage.setItem("authorization", "");
+    push(login_url);
   }
 </script>
 
@@ -155,11 +157,13 @@
           <td>{plan.date}</td>
           <td>{plan.period.name}</td>
           <td>{plan.item}</td>
-          <td
-            ><i class="bi bi-pencil-square"></i>&nbsp;
-            <i class="bi bi-trash3" on:click={(e) => deleteOne(e, plan.id)}
-            ></i></td
-          >
+          <td>
+            <button
+              class="btn btn-danger"
+              on:click={(event) => deleteOne(event, plan.id)}
+              ><i class="bi bi-trash3"></i></button
+            >
+          </td>
         </tr>
       {/each}
     </tbody>
