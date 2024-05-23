@@ -2,6 +2,16 @@
   import { push } from "svelte-spa-router";
   import { Authorization } from "./store/stores";
 
+  let authorization = {};
+
+  Authorization.subscribe((auth) => {
+    authorization = auth;
+  });
+
+  if (authorization) {
+    push("/");
+  }
+
   let loginData = {
     username: "",
     password: "",
@@ -25,6 +35,7 @@
     });
 
     let data = await response.json();
+    console.log(data);
 
     if (response.status === 200) {
       Authorization.set(data);

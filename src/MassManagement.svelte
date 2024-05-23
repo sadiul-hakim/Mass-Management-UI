@@ -11,7 +11,7 @@
 
 <main class="container-fluid main-content">
   <div class="row h-100">
-    <div class="col-md-3 bg-dark text-white h-100 p-0 m-0 d-flex flex-column">
+    <div class="col-md-2 bg-dark text-white h-100 p-0 m-0 d-flex flex-column">
       <SideBar
         on:home={() => handleNavigation("Home")}
         on:transactionType={() => handleNavigation("Transaction Type")}
@@ -29,7 +29,7 @@
         on:oldReport={() => handleNavigation("OldReport")}
       />
     </div>
-    <div class="col-md-9 p-0 m-0 d-flex flex-column h-100">
+    <div class="col-md-10 p-0 m-0 d-flex flex-column h-100">
       <RightSide {navigation} />
     </div>
   </div>

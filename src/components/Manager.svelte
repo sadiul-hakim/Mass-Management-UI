@@ -58,7 +58,13 @@
         },
       }
     );
-    logout();
+
+    let data = await response.json();
+    if (data.status === 200) {
+      logout();
+    }
+
+    console.log(data);
   }
 
   async function handleSubmit() {
