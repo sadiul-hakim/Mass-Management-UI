@@ -27,6 +27,25 @@
     role: 0,
     status: 0,
   };
+
+  let userUpdateData = {
+    id: 0,
+    name: "",
+    phone: "",
+    email: "",
+    address: "",
+    status: 0,
+  };
+
+  function setUser(event, user) {
+    userUpdateData.id = user.id;
+    userUpdateData.name = user.name;
+    userUpdateData.email = user.email;
+    userUpdateData.phone = user.phone;
+    userUpdateData.address = user.address;
+    userUpdateData.status = user.status;
+  }
+
   // Variables ends here
   onMount(async () => {
     loadAll();
@@ -45,6 +64,23 @@
     });
     await loadAll();
     clearData();
+  }
+
+  async function handleUpdate() {
+    let response = await fetch("http://localhost:9090/user/v1/update", {
+      method: "POST",
+      body: JSON.stringify(userUpdateData),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
+
+    let data = await response.json();
+    console.log(data);
+
+    await loadAll();
+    clearUpdateData();
   }
   // saving of types
 
@@ -102,6 +138,17 @@
       status: 0,
     };
   }
+
+  function clearUpdateData() {
+    userUpdateData = {
+      id: 0,
+      name: "",
+      phone: "",
+      email: "",
+      address: "",
+      status: 0,
+    };
+  }
   // clearing local form data
 </script>
 
@@ -139,7 +186,12 @@
           <td>{user.address}</td>
           <td>{user.joiningDate}</td>
           <td
-            ><i class="bi bi-pencil-square"></i>&nbsp;
+            ><i
+              class="bi bi-pencil-square"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal1"
+              on:click={(e) => setUser(e, user)}
+            ></i>&nbsp;
             <i
               class="bi bi-trash3"
               on:click={(event) => deleteOne(event, user.id)}
@@ -247,6 +299,91 @@
               name="address"
               class="form-control"
               bind:value={userData.address}
+            ></textarea>
+          </div>
+          <br />
+          <button type="submit" class="btn btn-success">Save</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+          >Close</button
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Modal -->
+<div
+  class="modal fade"
+  id="exampleModal1"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Updating User</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form on:submit|preventDefault={handleUpdate}>
+          <div>
+            <label for="name">Name</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              bind:value={userUpdateData.name}
+            />
+          </div>
+          <br />
+          <div>
+            <label for="phone">Phone</label>
+            <input
+              type="text"
+              name="phone"
+              class="form-control"
+              bind:value={userUpdateData.phone}
+            />
+          </div>
+          <br />
+          <div>
+            <label for="phone">Email</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              bind:value={userUpdateData.email}
+            />
+          </div>
+          <br />
+          <div>
+            <label for="status">Status</label>
+            <select
+              name="status"
+              class="form-control"
+              bind:value={userUpdateData.status}
+            >
+              {#each statuses as status}
+                <option value={status.id}>{status.status}</option>
+              {/each}
+            </select>
+          </div>
+          <br />
+          <div>
+            <label for="address">Address</label>
+            <textarea
+              name="address"
+              class="form-control"
+              bind:value={userUpdateData.address}
             ></textarea>
           </div>
           <br />
