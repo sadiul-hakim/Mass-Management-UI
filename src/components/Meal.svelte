@@ -28,6 +28,15 @@
     date: "",
   };
 
+  let rangeMealData = {
+    id: 0,
+    userId: 0,
+    type: 0,
+    amount: 0,
+    startDate: "",
+    endDate: "",
+  };
+
   onMount(async () => {
     loadAllMeals();
     loadAllMealTypes();
@@ -48,6 +57,19 @@
     clearData();
   }
 
+  async function handleRangeMealSubmit() {
+    let response = await fetch("http://localhost:9090/meal/v1/add-in-range", {
+      method: "POST",
+      body: JSON.stringify(rangeMealData),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
+    await loadAllMeals();
+    clearRangeData();
+  }
+
   async function deleteOne(event, id) {
     let response = await fetch(`http://localhost:9090/meal/v1/delete/${id}`, {
       method: "DELETE",
@@ -65,6 +87,17 @@
       type: 0,
       amount: 0,
       period: 0,
+    };
+  }
+
+  function clearRangeData() {
+    rangeMealData = {
+      id: 0,
+      userId: 0,
+      type: 0,
+      amount: 0,
+      startDate: "",
+      endDate: "",
     };
   }
 
@@ -121,8 +154,13 @@
         <th scope="col">Amount</th>
         <th scope="col">Period</th>
         <th scope="col">Date</th>
-        <th scope="col"
-          ><button
+        <th scope="col">
+          <button
+            class="btn btn-primary me-2"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal2">Range</button
+          >
+          <button
             class="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"><i class="bi bi-plus-lg"></i></button
@@ -139,12 +177,11 @@
           <td>{meal.amount}</td>
           <td>{meal.period.name}</td>
           <td>{meal.date}</td>
-          <td
-            ><i class="bi bi-pencil-square"></i>&nbsp;
-            <i
-              class="bi bi-trash3"
+          <td>
+            <button
+              class="bi bi-trash3 btn btn-danger"
               on:click={(event) => deleteOne(event, meal.id)}
-            ></i></td
+            ></button></td
           >
         </tr>
       {/each}
@@ -163,9 +200,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">
-          Saving Meal Type
-        </h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Saving Meal</h1>
         <button
           type="button"
           class="btn-close"
@@ -230,6 +265,101 @@
                 <option value={period.id}>{period.name}</option>
               {/each}
             </select>
+          </div>
+          <br />
+          <button type="submit" class="btn btn-success">Save</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+          >Close</button
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Two -->
+
+<div
+  class="modal fade"
+  id="exampleModal2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Saving Meal In Range
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form on:submit|preventDefault={handleRangeMealSubmit}>
+          <div>
+            <label for="user">Border</label>
+            <select
+              name="user"
+              class="form-control"
+              bind:value={rangeMealData.userId}
+            >
+              {#each users as user (user.id)}
+                <option value={user.id}>{user.name}</option>
+              {/each}
+            </select>
+          </div>
+          <br />
+          <div>
+            <label for="type">Type</label>
+            <select
+              name="type"
+              class="form-control"
+              bind:value={rangeMealData.type}
+            >
+              {#each mealTypes as type (type.id)}
+                <option value={type.id}>{type.name}</option>
+              {/each}
+            </select>
+          </div>
+          <br />
+          <div>
+            <label for="amount">Amount</label>
+            <input
+              type="number"
+              name="amount"
+              id="amount"
+              class="form-control"
+              bind:value={rangeMealData.amount}
+            />
+          </div>
+          <br />
+          <div>
+            <label for="startDate">Start Date</label>
+            <input
+              type="date"
+              name="startDate"
+              id="startDate"
+              class="form-control"
+              bind:value={rangeMealData.startDate}
+            />
+          </div>
+          <br />
+          <div>
+            <label for="endDate">End Date</label>
+            <input
+              type="date"
+              name="endDate"
+              id="endDate"
+              class="form-control"
+              bind:value={rangeMealData.endDate}
+            />
           </div>
           <br />
           <button type="submit" class="btn btn-success">Save</button>

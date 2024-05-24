@@ -65,10 +65,17 @@
   }
   // loading all types
   async function deleteOne(event, id) {
+    console.log(authorization);
     let response = await fetch(`http://localhost:9090/cost/v1/delete/${id}`, {
       method: "DELETE",
-      Authorization: "Bearer " + authorization.token,
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
     });
+
+    let data = await response.json();
+    console.log(data);
+
     await loadAll();
   }
   // delete type

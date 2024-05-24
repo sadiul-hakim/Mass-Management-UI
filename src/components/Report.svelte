@@ -122,8 +122,10 @@
       <tr>
         <th scope="col">Date</th>
         <th scope="col">Meal Rate</th>
+        <th scope="col">Market Cost</th>
         <th scope="col">Extra Cost</th>
         <th scope="col">Total Cost</th>
+        <th scope="col">Total Deposit</th>
         <th scope="col">Total Income</th>
         <th scope="col">Borders</th>
         <th scope="col">Total Meals</th>
@@ -133,8 +135,10 @@
       <tr>
         <td>{report.date}</td>
         <td>{report.mealRate}</td>
-        <td>{report.other_cost}</td>
+        <td>{report.market}</td>
+        <td>{report.extra_cost}</td>
         <td>{report.total_cost}</td>
+        <td>{report.deposit}</td>
         <td>{report.total_income}</td>
         <td>{report.total_borders}</td>
         <td>{report.total_meals}</td>
@@ -162,7 +166,7 @@
           <td>{border.meals}</td>
           <td>{border.deposit}</td>
           <td>{border.meal_cost}</td>
-          <td>{border.other_cost}</td>
+          <td>{border.extra_cost}</td>
           <td>{border.total_cost}</td>
           <td>{border.balance}</td>
         </tr>

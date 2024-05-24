@@ -15,6 +15,7 @@
 
   let totals = {};
   let borderInfo = [];
+  let bills = [];
   let tableHeaders = [];
 
   // Variables ends here
@@ -41,14 +42,18 @@
         Authorization: "Bearer " + authorization.token,
       },
     });
+
     borderInfo = await response.json();
+    console.log(borderInfo);
+    bills = borderInfo.bills;
+
+    console.log(tableHeaders);
     if (borderInfo.length !== 0) {
       let info = borderInfo[0];
-      tableHeaders = Object.keys(info);
+      tableHeaders = Object.keys(info.bills);
     }
 
     borderDepositeChart(borderInfo);
-    elecChart(borderInfo);
   }
 
   function borderDepositeChart(borderInfo) {
@@ -62,7 +67,7 @@
       };
     }
 
-    var chart = new CanvasJS.Chart("elec-chart", {
+    var chart = new CanvasJS.Chart("chart", {
       animationEnabled: true,
       title: {
         text: "Border Deposite Chart",
@@ -73,46 +78,7 @@
       axisY2: {
         interlacedColor: "rgba(1,77,101,.2)",
         gridColor: "rgba(1,77,101,.1)",
-        title: "Border Deposite",
-      },
-      data: [
-        {
-          type: "bar",
-          name: "companies",
-          color: "#014D65",
-          axisYType: "secondary",
-          dataPoints: dataArray,
-        },
-      ],
-    });
-
-    chart.render();
-  }
-
-  function elecChart(borderInfo) {
-    console.log(borderInfo);
-    let dataArray = [];
-    let info;
-    for (let i = 0; i < borderInfo.length; i++) {
-      info = borderInfo[i];
-      dataArray[i] = {
-        label: info.name,
-        y: info["Electricity Bill"],
-      };
-    }
-
-    var chart = new CanvasJS.Chart("chart", {
-      animationEnabled: true,
-      title: {
-        text: "Electricity Bill Chart",
-      },
-      axisX: {
-        interval: 1,
-      },
-      axisY2: {
-        interlacedColor: "rgba(1,77,101,.2)",
-        gridColor: "rgba(1,77,101,.1)",
-        title: "Electricity Bill",
+        title: "",
       },
       data: [
         {
@@ -132,6 +98,10 @@
 <div class="h-100 overflow-y-auto p-3">
   <div class="row d-flex justify-content-between">
     <div class="card col-md-2 m-1 text-center p-2">
+      <h4>Total Deposit</h4>
+      <h5>{totals.deposit}</h5>
+    </div>
+    <div class="card col-md-2 m-1 text-center p-2">
       <h4>Total Income</h4>
       <h5>{totals.income}</h5>
     </div>
@@ -144,18 +114,37 @@
       <h5>{totals.active_user}</h5>
     </div>
     <div class="card col-md-2 m-1 text-center p-2">
-      <h4>Total Inactive Borders</h4>
-      <h5>{totals.inactive_user}</h5>
+      <h4>Other Borders</h4>
+      <h5>{totals.other_users}</h5>
     </div>
   </div>
+
+  <!-- Deposite Section -->
   <div class="row mt-4">
     <div class="col-12" style="height: 370px; width:100%;" id="chart"></div>
   </div>
-  <div class="row mt-2">
-    <div
-      class="col-12"
-      style="height: 370px; width:100%;"
-      id="elec-chart"
-    ></div>
+  <!-- Bills Section -->
+
+  <div class="row card p-3 mt-4">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          {#each tableHeaders as header, index (index)}
+            <th>{header}</th>
+          {/each}
+        </tr>
+      </thead>
+      <tbody>
+        {#each borderInfo as info, index (index)}
+          <tr>
+            <td>{info["name"]}</td>
+            {#each tableHeaders as header, ind (ind)}
+              <td>{info.bills[header]}</td>
+            {/each}
+          </tr>
+        {/each}
+      </tbody>
+    </table>
   </div>
 </div>

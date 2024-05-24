@@ -22,7 +22,6 @@
     name: "setting",
     properties: {
       TransactionTypeMarket: 0,
-      TransactionTypeElectricityBill: 0,
       TransactionTypeBorderDeposit: 0,
       UserStatusActive: 0,
       MealTypeOff: 0,
@@ -31,6 +30,7 @@
       UserRoleManager: 0,
     },
     excludeTransactionTypes: [],
+    billTypes: [],
   };
   let transactionTypes = [];
   let userStatus = [];
@@ -77,9 +77,7 @@
       body: JSON.stringify(setting),
     });
 
-    console.log(response.status);
-
-    if (response === 200) {
+    if (response.status === 200) {
       showToast();
     }
 
@@ -178,19 +176,6 @@
         </select>
       </div>
       <br />
-      <!-- Electricity Bill -->
-      <div>
-        <label for="electricity-bill">Electricity Bill Type</label>
-        <select
-          class="form-control"
-          bind:value={setting.properties.TransactionTypeElectricityBill}
-        >
-          {#each transactionTypes as type (type.id)}
-            <option value={type.id}>{type.title}</option>
-          {/each}
-        </select>
-      </div>
-      <br />
       <!-- Border Deposite -->
       <div>
         <label for="border-deposite">Border Deposite Type</label>
@@ -227,6 +212,15 @@
         >
           {#each transactionTypes as type (type.id)}
             <option value={type.id}>{type.title}</option>
+          {/each}
+        </select>
+      </div>
+      <br />
+      <div>
+        <label for="Bill Types">Bill Types</label>
+        <select class="form-control" bind:value={setting.billTypes} multiple>
+          {#each transactionTypes as billType (billType.id)}
+            <option value={billType.id}>{billType.title}</option>
           {/each}
         </select>
       </div>
