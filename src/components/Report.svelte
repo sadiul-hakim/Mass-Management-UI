@@ -8,6 +8,8 @@
     domain_api,
     export_pdf_api,
     report_save_and_clean_api,
+    login_url,
+    generate_report,
   } from "../util/apis";
 
   let authorization = {};
@@ -17,7 +19,7 @@
   });
 
   if (authorization === undefined) {
-    push("/login");
+    push(login_url);
   }
 
   let report = {};
@@ -31,7 +33,7 @@
   });
 
   async function loadReport() {
-    let response = await fetch("http://localhost:9090/report/v1/generate", {
+    let response = await fetch(`${domain_api}${generate_report}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,

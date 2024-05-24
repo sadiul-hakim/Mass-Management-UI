@@ -3,7 +3,17 @@
 
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
-  import { login_url } from "../util/apis";
+  import {
+    add_meal_plan,
+    change_manager,
+    delete_meal_plan,
+    domain_api,
+    get_all_meal_plan,
+    get_all_period,
+    get_role_by_role_border,
+    get_user_by_role,
+    login_url,
+  } from "../util/apis";
 
   let authorization = {};
 
@@ -12,7 +22,7 @@
   });
 
   if (authorization === undefined) {
-    push("/login");
+    push(login_url);
   }
 
   export let manager = {};
@@ -35,22 +45,19 @@
   // action section
   async function deleteOne(event, id) {
     console.log("delete " + id);
-    let response = await fetch(
-      `http://localhost:9090/meal-plan/v1/delete/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + authorization.token,
-        },
-      }
-    );
+    let response = await fetch(`${domain_api}${delete_meal_plan}${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     let data = await response.json();
     console.log(data);
     await loadPlans();
   }
   async function changeManager(event, borderId) {
     let response = await fetch(
-      `http://localhost:9090/user/v1/change-manager?managerId=${manager.id}&userId=${borderId}`,
+      `${domain_api}${change_manager}?managerId=${manager.id}&userId=${borderId}`,
       {
         method: "GET",
         headers: {
@@ -68,7 +75,7 @@
   }
 
   async function handleSubmit() {
-    let response = await fetch("http://localhost:9090/meal-plan/v1/add", {
+    let response = await fetch(`${domain_api}${add_meal_plan}`, {
       method: "POST",
       body: JSON.stringify(planDate),
       headers: {
@@ -90,7 +97,7 @@
 
   // load section
   async function loadAllPeriods() {
-    let response = await fetch("http://localhost:9090/period/v1/get-all", {
+    let response = await fetch(`${domain_api}${get_all_period}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -99,7 +106,7 @@
     periods = await response.json();
   }
   async function loadPlans() {
-    let response = await fetch("http://localhost:9090/meal-plan/v1/get-all", {
+    let response = await fetch(`${domain_api}${get_all_meal_plan}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -108,18 +115,15 @@
     plans = await response.json();
   }
   async function loadBorders() {
-    let roleResponse = await fetch(
-      "http://localhost:9090/user-role/v1/get-by-role/Border",
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + authorization.token,
-        },
-      }
-    );
+    let roleResponse = await fetch(`${domain_api}${get_role_by_role_border}`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     let borderRole = await roleResponse.json();
     let response = await fetch(
-      `http://localhost:9090/user/v1/get-by-role/${borderRole.id}`,
+      `${domain_api}${get_user_by_role}${borderRole.id}`,
       {
         method: "GET",
         headers: {

@@ -3,6 +3,7 @@
 
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
+  import { domain_api, login_url, send_mail } from "../util/apis";
 
   let authorization = {};
 
@@ -11,7 +12,7 @@
   });
 
   if (authorization === undefined) {
-    push("/login");
+    push(login_url);
   }
 
   let toMail = "";
@@ -21,17 +22,14 @@
   };
 
   async function sendMail() {
-    let response = await fetch(
-      `http://localhost:9090/mail/v1/send?toMail=${toMail}`,
-      {
-        method: "POST",
-        body: JSON.stringify(mailData),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + authorization.token,
-        },
-      }
-    );
+    let response = await fetch(`${domain_api}${send_mail}${toMail}`, {
+      method: "POST",
+      body: JSON.stringify(mailData),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
 
     let data = await response.json();
     console.log(data);

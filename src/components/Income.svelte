@@ -3,6 +3,15 @@
 
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
+  import {
+    add_income,
+    delete_income,
+    domain_api,
+    get_all_income,
+    get_all_transaction_type_api,
+    get_all_user,
+    login_url,
+  } from "../util/apis";
 
   let authorization = {};
 
@@ -11,7 +20,7 @@
   });
 
   if (authorization === undefined) {
-    push("/login");
+    push(login_url);
   }
 
   let types = [];
@@ -31,7 +40,7 @@
   });
   // on page load functionality
   async function handleSubmit() {
-    let response = await fetch("http://localhost:9090/income/v1/add", {
+    let response = await fetch(`${domain_api}${add_income}`, {
       method: "POST",
       body: JSON.stringify(incomeData),
       headers: {
@@ -45,7 +54,7 @@
   // saving of types
 
   async function loadAll() {
-    let response = await fetch("http://localhost:9090/income/v1/get-all", {
+    let response = await fetch(`${domain_api}${get_all_income}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -54,19 +63,16 @@
     incomes = await response.json();
   }
   async function loadAllTypes() {
-    let response = await fetch(
-      "http://localhost:9090/transaction-type/v1/get-all",
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + authorization.token,
-        },
-      }
-    );
+    let response = await fetch(`${domain_api}${get_all_transaction_type_api}`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     types = await response.json();
   }
   async function loadAllUsers() {
-    let response = await fetch("http://localhost:9090/user/v1/get-all", {
+    let response = await fetch(`${domain_api}${get_all_user}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -76,7 +82,7 @@
   }
   // loading all types
   async function deleteOne(event, id) {
-    let response = await fetch(`http://localhost:9090/income/v1/delete/${id}`, {
+    let response = await fetch(`${domain_api}${delete_income}${id}`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + authorization.token,

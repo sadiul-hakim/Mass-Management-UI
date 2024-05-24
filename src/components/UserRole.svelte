@@ -4,6 +4,13 @@
 
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
+  import {
+    login_url,
+    domain_api,
+    add_user_role,
+    get_all_user_role_api,
+    delete_user_role,
+  } from "../util/apis";
 
   let authorization = {};
 
@@ -12,7 +19,7 @@
   });
 
   if (authorization === undefined) {
-    push("/login");
+    push(login_url);
   }
 
   let roles = [];
@@ -27,7 +34,7 @@
   });
   // on page load functionality
   async function handleSubmit() {
-    let response = await fetch("http://localhost:9090/user-role/v1/add", {
+    let response = await fetch(`${domain_api}${add_user_role}`, {
       method: "POST",
       body: JSON.stringify(roleData),
       headers: {
@@ -41,7 +48,7 @@
   // saving of types
 
   async function loadAll() {
-    let response = await fetch("http://localhost:9090/user-role/v1/get-all", {
+    let response = await fetch(`${domain_api}${get_all_user_role_api}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -51,15 +58,12 @@
   }
   // loading all types
   async function deleteOne(event, id) {
-    let response = await fetch(
-      `http://localhost:9090/user-role/v1/delete/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + authorization.token,
-        },
-      }
-    );
+    let response = await fetch(`${domain_api}${delete_user_role}${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
 
     if (response.status !== 200) {
       let msg = await response.json();

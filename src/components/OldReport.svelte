@@ -8,6 +8,7 @@
     domain_api,
     delete_report_api,
     get_all_report_api,
+    login_url,
   } from "../util/apis";
 
   let authorization = {};
@@ -18,7 +19,7 @@
   });
 
   if (authorization === undefined) {
-    push("/login");
+    push(login_url);
   }
 
   onMount(async () => {

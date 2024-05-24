@@ -4,6 +4,13 @@
 
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
+  import {
+    login_url,
+    domain_api,
+    add_period,
+    get_all_period,
+    delete_period,
+  } from "../util/apis";
 
   let authorization = {};
 
@@ -12,7 +19,7 @@
   });
 
   if (authorization === undefined) {
-    push("/login");
+    push(login_url);
   }
 
   let periods = [];
@@ -27,7 +34,7 @@
   });
   // on page load functionality
   async function handleSubmit() {
-    let response = await fetch("http://localhost:9090/period/v1/add", {
+    let response = await fetch(`${domain_api}${add_period}`, {
       method: "POST",
       body: JSON.stringify(periodData),
       headers: {
@@ -41,7 +48,7 @@
   // saving of types
 
   async function loadAll() {
-    let response = await fetch("http://localhost:9090/period/v1/get-all", {
+    let response = await fetch(`${domain_api}${get_all_period}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -51,7 +58,7 @@
   }
   // loading all types
   async function deleteOne(event, id) {
-    let response = await fetch(`http://localhost:9090/period/v1/delete/${id}`, {
+    let response = await fetch(`${domain_api}${delete_period}${id}`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + authorization.token,

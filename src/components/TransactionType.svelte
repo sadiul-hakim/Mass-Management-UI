@@ -4,6 +4,13 @@
 
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
+  import {
+    add_transaction_type,
+    delete_transaction_type,
+    domain_api,
+    get_all_transaction_type_api,
+    login_url,
+  } from "../util/apis";
 
   let authorization = {};
 
@@ -12,7 +19,7 @@
   });
 
   if (authorization === undefined) {
-    push("/login");
+    push(login_url);
   }
 
   let types = [];
@@ -27,17 +34,14 @@
   });
   // on page load functionality
   async function handleSubmit() {
-    let response = await fetch(
-      "http://localhost:9090/transaction-type/v1/add",
-      {
-        method: "POST",
-        body: JSON.stringify(typeData),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + authorization.token,
-        },
-      }
-    );
+    let response = await fetch(`${domain_api}${add_transaction_type}`, {
+      method: "POST",
+      body: JSON.stringify(typeData),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     await loadAll();
     clearData();
     console.log(response.status);
@@ -45,28 +49,22 @@
   // saving of types
 
   async function loadAll() {
-    let response = await fetch(
-      "http://localhost:9090/transaction-type/v1/get-all",
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + authorization.token,
-        },
-      }
-    );
+    let response = await fetch(`${domain_api}${get_all_transaction_type_api}`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     types = await response.json();
   }
   // loading all types
   async function deleteOne(event, id) {
-    let response = await fetch(
-      `http://localhost:9090/transaction-type/v1/delete/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: "Bearer " + authorization.token,
-        },
-      }
-    );
+    let response = await fetch(`${domain_api}${delete_transaction_type}${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
 
     if (response.status !== 200) {
       let msg = await response.json();

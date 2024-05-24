@@ -2,6 +2,12 @@
   import { onMount } from "svelte";
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
+  import {
+    domain_api,
+    home_border_info,
+    home_totals,
+    login_url,
+  } from "../util/apis";
 
   let authorization = {};
 
@@ -10,7 +16,7 @@
   });
 
   if (!authorization) {
-    push("/login");
+    push(login_url);
   }
 
   let totals = {};
@@ -26,7 +32,7 @@
   // saving of types
 
   async function loadTotals() {
-    let response = await fetch("http://localhost:9090/home/v1/totals", {
+    let response = await fetch(`${domain_api}${home_totals}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -36,7 +42,7 @@
   }
 
   async function loadBorderInfo() {
-    let response = await fetch("http://localhost:9090/home/v1/border-info", {
+    let response = await fetch(`${domain_api}${home_border_info}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,

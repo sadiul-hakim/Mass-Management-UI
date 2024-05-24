@@ -3,6 +3,17 @@
 
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
+  import {
+    add_meal,
+    add_meal_in_range,
+    delete_meal,
+    domain_api,
+    get_all_meal,
+    get_all_meal_type,
+    get_all_period,
+    get_all_user,
+    login_url,
+  } from "../util/apis";
 
   let authorization = {};
 
@@ -11,7 +22,7 @@
   });
 
   if (authorization === undefined) {
-    push("/login");
+    push(login_url);
   }
 
   let meals = [];
@@ -35,6 +46,7 @@
     amount: 0,
     startDate: "",
     endDate: "",
+    period: 0,
   };
 
   onMount(async () => {
@@ -45,7 +57,7 @@
   });
 
   async function handleSubmit() {
-    let response = await fetch("http://localhost:9090/meal/v1/add", {
+    let response = await fetch(`${domain_api}${add_meal}`, {
       method: "POST",
       body: JSON.stringify(mealData),
       headers: {
@@ -58,7 +70,7 @@
   }
 
   async function handleRangeMealSubmit() {
-    let response = await fetch("http://localhost:9090/meal/v1/add-in-range", {
+    let response = await fetch(`${domain_api}${add_meal_in_range}`, {
       method: "POST",
       body: JSON.stringify(rangeMealData),
       headers: {
@@ -71,7 +83,7 @@
   }
 
   async function deleteOne(event, id) {
-    let response = await fetch(`http://localhost:9090/meal/v1/delete/${id}`, {
+    let response = await fetch(`${domain_api}${delete_meal}${id}`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -98,12 +110,13 @@
       amount: 0,
       startDate: "",
       endDate: "",
+      period: 0,
     };
   }
 
   // load all user;
   async function loadAllMeals() {
-    let response = await fetch("http://localhost:9090/meal/v1/get-all", {
+    let response = await fetch(`${domain_api}${get_all_meal}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -113,7 +126,7 @@
   }
 
   async function loadAllUsers() {
-    let response = await fetch("http://localhost:9090/user/v1/get-all", {
+    let response = await fetch(`${domain_api}${get_all_user}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -123,7 +136,7 @@
   }
 
   async function loadAllMealTypes() {
-    let response = await fetch("http://localhost:9090/meal-type/v1/get-all", {
+    let response = await fetch(`${domain_api}${get_all_meal_type}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -133,7 +146,7 @@
   }
 
   async function loadAllPeriods() {
-    let response = await fetch("http://localhost:9090/period/v1/get-all", {
+    let response = await fetch(`${domain_api}${get_all_period}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -360,6 +373,19 @@
               class="form-control"
               bind:value={rangeMealData.endDate}
             />
+          </div>
+          <br />
+          <div>
+            <label for="period">Period</label>
+            <select
+              name="period"
+              class="form-control"
+              bind:value={rangeMealData.period}
+            >
+              {#each periods as period (period.id)}
+                <option value={period.id}>{period.name}</option>
+              {/each}
+            </select>
           </div>
           <br />
           <button type="submit" class="btn btn-success">Save</button>

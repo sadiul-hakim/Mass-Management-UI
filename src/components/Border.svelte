@@ -3,6 +3,16 @@
 
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
+  import {
+    domain_api,
+    add_user,
+    update_user,
+    get_all_user,
+    get_all_status,
+    delete_user,
+    login_url,
+    get_role_by_role_border,
+  } from "../util/apis";
 
   let authorization = {};
 
@@ -11,7 +21,7 @@
   });
 
   if (authorization === undefined) {
-    push("/login");
+    push(login_url);
   }
 
   let users = [];
@@ -54,7 +64,7 @@
   });
   // on page load functionality
   async function handleSubmit() {
-    let response = await fetch("http://localhost:9090/user/v1/add", {
+    let response = await fetch(`${domain_api}${add_user}`, {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {
@@ -67,7 +77,7 @@
   }
 
   async function handleUpdate() {
-    let response = await fetch("http://localhost:9090/user/v1/update", {
+    let response = await fetch(`${domain_api}${update_user}`, {
       method: "POST",
       body: JSON.stringify(userUpdateData),
       headers: {
@@ -85,7 +95,7 @@
   // saving of types
 
   async function loadAll() {
-    let response = await fetch("http://localhost:9090/user/v1/get-all", {
+    let response = await fetch(`${domain_api}${get_all_user}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -95,21 +105,18 @@
   }
 
   async function loadBorderRole() {
-    let response = await fetch(
-      "http://localhost:9090/user-role/v1/get-by-role/Border",
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + authorization.token,
-        },
-      }
-    );
+    let response = await fetch(`${domain_api}${get_role_by_role_border}`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
     role = await response.json();
     userData.role = role.id;
   }
 
   async function loadAllStatus() {
-    let response = await fetch("http://localhost:9090/user-status/v1/get-all", {
+    let response = await fetch(`${domain_api}${get_all_status}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + authorization.token,
@@ -119,7 +126,7 @@
   }
   // loading all types
   async function deleteOne(event, id) {
-    let response = await fetch(`http://localhost:9090/user/v1/delete/${id}`, {
+    let response = await fetch(`${domain_api}${delete_user}${id}`, {
       method: "DELETE",
       Authorization: "Bearer " + authorization.token,
     });

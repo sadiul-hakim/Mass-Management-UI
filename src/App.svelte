@@ -8,6 +8,7 @@
   import { push } from "svelte-spa-router";
 
   import { Authorization } from "./store/stores";
+  import ChangePassword from "./ChangePassword.svelte";
 
   onMount(() => {
     let authorization = localStorage.getItem("authorization");
@@ -26,6 +27,7 @@
     "/": MassManagement,
     "/login": Login,
     "/settings": Settings,
+    "/change-password": ChangePassword,
     "*": NotFount,
   };
 </script>

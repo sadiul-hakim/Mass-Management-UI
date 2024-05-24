@@ -2,7 +2,14 @@
   import { onMount } from "svelte";
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
-  import { login_url, settings_url } from "../util/apis";
+  import {
+    change_password_url,
+    domain_api,
+    get_role_by_role_manager,
+    get_user_by_role,
+    login_url,
+    settings_url,
+  } from "../util/apis";
 
   import TransactionType from "./TransactionType.svelte";
   import MealType from "./MealType.svelte";
@@ -38,15 +45,12 @@
 
   // loading section
   async function loadManager() {
-    let roleResponse = await fetch(
-      "http://localhost:9090/user-role/v1/get-by-role/Manager",
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + authorization.token,
-        },
-      }
-    );
+    let roleResponse = await fetch(`${domain_api}${get_role_by_role_manager}`, {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
+    });
 
     if (roleResponse.status !== 200) {
       return;
@@ -54,7 +58,7 @@
 
     let managerRole = await roleResponse.json();
     let response = await fetch(
-      `http://localhost:9090/user/v1/get-by-role/${managerRole.id}`,
+      `${domain_api}${get_user_by_role}${managerRole.id}`,
       {
         method: "GET",
         headers: {
@@ -83,6 +87,10 @@
   function goToSettings() {
     push(settings_url);
   }
+
+  function goToChangePassword() {
+    push(change_password_url);
+  }
 </script>
 
 <div class="header p-4 bg-light d-flex justify-content-between">
@@ -101,6 +109,9 @@
       <ul class="dropdown-menu">
         <li class="dropdown-item" on:click={goToSettings}>
           <i class="bi bi-gear"></i> Settings
+        </li>
+        <li class="dropdown-item" on:click={goToChangePassword}>
+          <i class="bi bi-gear"></i> Change Password
         </li>
         <li><hr class="dropdown-divider" /></li>
         <li class="dropdown-item" on:click={logout}>
