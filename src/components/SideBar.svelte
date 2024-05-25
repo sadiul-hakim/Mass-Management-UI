@@ -30,6 +30,12 @@
     </li>
     <li
       class="list-group-item text-light"
+      on:click={() => dispatch("mealSheet")}
+    >
+      <i class="bi bi-check-square"></i> Meal Sheet
+    </li>
+    <li
+      class="list-group-item text-light"
       on:click={() => dispatch("mealType")}
     >
       <i class="bi bi-card-list"></i> Meal Type
@@ -63,6 +69,9 @@
       on:click={() => dispatch("oldReport")}
     >
       <i class="bi bi-list-columns-reverse"></i> Old Report
+    </li>
+    <li class="list-group-item text-light" on:click={() => dispatch("rules")}>
+      <i class="bi bi-list-stars"></i> Rules
     </li>
     <li class="list-group-item text-light" on:click={() => dispatch("mail")}>
       <i class="bi bi-chat-left-text"></i> Mail

@@ -52,3 +52,5 @@ export const delete_user_role = "/user-role/v1/delete/";
 export const add_user_status = "/user-status/v1/add";
 export const delete_user_status = "/user-status/v1/delete/";
 export const add_meal_type = "/meal-type/v1/add";
+export const change_password_api = "/user/v1/change-password";
+export const get_meal_sheet = "/meal/v1/get-meal-sheet";

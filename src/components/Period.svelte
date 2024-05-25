@@ -26,6 +26,7 @@
   let periodData = {
     id: 0,
     name: "",
+    periodOrder: 0,
     description: "",
   };
   // Variables ends here
@@ -106,6 +107,7 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Name</th>
+        <th scope="col">Order</th>
         <th scope="col">Description</th>
         <th scope="col"
           ><button
@@ -121,6 +123,7 @@
         <tr>
           <th scope="row">{index + 1}</th>
           <td>{period.name}</td>
+          <td>{period.periodOrder}</td>
           <td>{period.description}</td>
           <td
             ><i class="bi bi-pencil-square"></i>&nbsp;
@@ -164,6 +167,17 @@
               id="name"
               class="form-control"
               bind:value={periodData.name}
+            />
+          </div>
+          <br />
+          <div>
+            <label for="title">Order</label>
+            <input
+              type="number"
+              name="order"
+              id="order"
+              class="form-control"
+              bind:value={periodData.periodOrder}
             />
           </div>
           <br />

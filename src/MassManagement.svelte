@@ -24,9 +24,11 @@
         on:border={() => handleNavigation("Border")}
         on:manager={() => handleNavigation("Manager")}
         on:meal={() => handleNavigation("Meal")}
+        on:mealSheet={() => handleNavigation("MealSheet")}
         on:report={() => handleNavigation("Report")}
         on:mail={() => handleNavigation("Mail")}
         on:oldReport={() => handleNavigation("OldReport")}
+        on:rules={() => handleNavigation("Rules")}
       />
     </div>
     <div class="col-md-10 p-0 m-0 d-flex flex-column h-100">

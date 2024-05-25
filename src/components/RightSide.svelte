@@ -25,6 +25,8 @@
   import Report from "./Report.svelte";
   import Mail from "./Mail.svelte";
   import OldReport from "./OldReport.svelte";
+  import Rules from "./Rules.svelte";
+  import MealSheet from "./MealSheet.svelte";
 
   export let navigation = "Home";
 
@@ -111,7 +113,7 @@
           <i class="bi bi-gear"></i> Settings
         </li>
         <li class="dropdown-item" on:click={goToChangePassword}>
-          <i class="bi bi-gear"></i> Change Password
+          <i class="bi bi-file-earmark-lock2"></i> Change Password
         </li>
         <li><hr class="dropdown-divider" /></li>
         <li class="dropdown-item" on:click={logout}>
@@ -144,12 +146,16 @@
     <Manager {manager} />
   {:else if navigation === "Meal"}
     <Meal />
+  {:else if navigation === "MealSheet"}
+    <MealSheet />
   {:else if navigation === "Report"}
     <Report />
   {:else if navigation === "Mail"}
     <Mail />
   {:else if navigation === "OldReport"}
     <OldReport />
+  {:else if navigation === "Rules"}
+    <Rules />
   {:else}
     <Home />
   {/if}

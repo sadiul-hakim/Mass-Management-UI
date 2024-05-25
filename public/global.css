@@ -32,3 +32,10 @@ body {
     font-weight: 400 !important;
     font-style: normal !important;
 }
+
+.sheet-table,
+.sheet-table th,
+.sheet-table td {
+    border: 1px solid black !important;
+    border-collapse: collapse !important;
+}
