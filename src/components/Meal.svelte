@@ -34,7 +34,7 @@
     id: 0,
     userId: 0,
     type: 0,
-    amount: 0,
+    amount: 1,
     period: 0,
     date: "",
   };
@@ -43,7 +43,7 @@
     id: 0,
     userId: 0,
     type: 0,
-    amount: 0,
+    amount: 1,
     startDate: "",
     endDate: "",
     period: 0,
@@ -97,7 +97,7 @@
       id: 0,
       userId: 0,
       type: 0,
-      amount: 0,
+      amount: 1,
       period: 0,
     };
   }
@@ -107,7 +107,7 @@
       id: 0,
       userId: 0,
       type: 0,
-      amount: 0,
+      amount: 1,
       startDate: "",
       endDate: "",
       period: 0,

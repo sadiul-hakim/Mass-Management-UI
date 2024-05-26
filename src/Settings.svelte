@@ -28,6 +28,7 @@
       MealTypeExtra: 0,
       UserRoleBorder: 0,
       UserRoleManager: 0,
+      numberOfFixedMeal: 0,
     },
     excludeTransactionTypes: [],
     billTypes: [],
@@ -277,6 +278,18 @@
             <option value={role.id}>{role.role}</option>
           {/each}
         </select>
+      </div>
+      <br />
+      <!-- Fixed Meal -->
+      <div>
+        <label for="role-manager">Fixed Meal</label>
+        <input
+          type="number"
+          name="fixed-meal"
+          id="fixed-meal"
+          class="form-control"
+          bind:value={setting.properties.numberOfFixedMeal}
+        />
       </div>
       <br />
     </div>

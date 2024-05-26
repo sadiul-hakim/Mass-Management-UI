@@ -9,7 +9,7 @@
   >
 </div>
 <div class="sidebar__menu mt-5">
-  <ul class="list-group">
+  <ul class="list-group sidebar-list">
     <li class="list-group-item text-light" on:click={() => dispatch("home")}>
       <i class="bi bi-house-door-fill"></i> Home
     </li>

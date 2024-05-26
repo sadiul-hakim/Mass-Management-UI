@@ -54,3 +54,6 @@ export const delete_user_status = "/user-status/v1/delete/";
 export const add_meal_type = "/meal-type/v1/add";
 export const change_password_api = "/user/v1/change-password";
 export const get_meal_sheet = "/meal/v1/get-meal-sheet";
+export const get_all_rules = "/rule/v1/get-all";
+export const add_rule = "/rule/v1/add";
+export const delete_rule = "/rule/v1/delete/";
