@@ -115,6 +115,10 @@
         <li class="dropdown-item" on:click={goToChangePassword}>
           <i class="bi bi-file-earmark-lock2"></i> Change Password
         </li>
+        <li class="dropdown-item">
+          <i class="bi bi-file-earmark-word"></i>
+          <a href="resource/MMS.docx">Manual</a>
+        </li>
         <li><hr class="dropdown-divider" /></li>
         <li class="dropdown-item" on:click={logout}>
           <i class="bi bi-box-arrow-right"></i> Logout

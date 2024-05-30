@@ -57,3 +57,4 @@ export const get_meal_sheet = "/meal/v1/get-meal-sheet";
 export const get_all_rules = "/rule/v1/get-all";
 export const add_rule = "/rule/v1/add";
 export const delete_rule = "/rule/v1/delete/";
+export const validate_token = "/security/v1/validate-token";

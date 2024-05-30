@@ -102,6 +102,7 @@
       },
     });
     users = await response.json();
+    console.log(users);
   }
 
   async function loadBorderRole() {
