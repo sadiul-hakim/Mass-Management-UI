@@ -77,7 +77,7 @@
           <tr>
             <td>{report.report.date}</td>
             <td>{report.report.mealRate}</td>
-            <td>{report.report.other_cost}</td>
+            <td>{report.report.extra_cost}</td>
             <td>{report.report.total_cost}</td>
             <td>{report.report.total_income}</td>
             <td>{report.report.total_borders}</td>
@@ -106,7 +106,7 @@
               <td>{border.meals}</td>
               <td>{border.deposit}</td>
               <td>{border.meal_cost}</td>
-              <td>{border.other_cost}</td>
+              <td>{border.extra_cost}</td>
               <td>{border.total_cost}</td>
               <td>{border.balance}</td>
             </tr>

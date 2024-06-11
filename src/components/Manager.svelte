@@ -66,8 +66,7 @@
       }
     );
 
-    let data = await response.json();
-    if (data.status === 200) {
+    if (response.status === 200) {
       logout();
     }
 

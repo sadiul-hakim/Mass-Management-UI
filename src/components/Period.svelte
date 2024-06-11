@@ -27,6 +27,7 @@
     id: 0,
     name: "",
     periodOrder: 0,
+    meal: 0.0,
     description: "",
   };
   // Variables ends here
@@ -108,6 +109,7 @@
         <th scope="col">#</th>
         <th scope="col">Name</th>
         <th scope="col">Order</th>
+        <th scope="col">Meal</th>
         <th scope="col">Description</th>
         <th scope="col"
           ><button
@@ -124,6 +126,7 @@
           <th scope="row">{index + 1}</th>
           <td>{period.name}</td>
           <td>{period.periodOrder}</td>
+          <td>{period.meal}</td>
           <td>{period.description}</td>
           <td
             ><i class="bi bi-pencil-square"></i>&nbsp;
@@ -178,6 +181,17 @@
               id="order"
               class="form-control"
               bind:value={periodData.periodOrder}
+            />
+          </div>
+          <br />
+          <div>
+            <label for="title">Meal</label>
+            <input
+              type="text"
+              name="meal"
+              id="meal"
+              class="form-control"
+              bind:value={periodData.meal}
             />
           </div>
           <br />

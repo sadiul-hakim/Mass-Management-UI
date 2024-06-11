@@ -34,7 +34,7 @@
     id: 0,
     userId: 0,
     type: 0,
-    amount: 1,
+    amount: 0,
     period: 0,
     date: "",
   };
@@ -43,7 +43,7 @@
     id: 0,
     userId: 0,
     type: 0,
-    amount: 1,
+    amount: 0,
     startDate: "",
     endDate: "",
     period: 0,
@@ -248,7 +248,7 @@
           <div>
             <label for="amount">Amount</label>
             <input
-              type="number"
+              type="text"
               name="amount"
               id="amount"
               class="form-control"
@@ -345,7 +345,7 @@
           <div>
             <label for="amount">Amount</label>
             <input
-              type="number"
+              type="text"
               name="amount"
               id="amount"
               class="form-control"

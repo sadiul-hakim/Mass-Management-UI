@@ -129,7 +129,9 @@
   async function deleteOne(event, id) {
     let response = await fetch(`${domain_api}${delete_user}${id}`, {
       method: "DELETE",
-      Authorization: "Bearer " + authorization.token,
+      headers: {
+        Authorization: "Bearer " + authorization.token,
+      },
     });
     await loadAll();
   }

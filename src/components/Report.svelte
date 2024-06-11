@@ -151,9 +151,10 @@
   <h3 class="my-2">Borders Report</h3>
   <table class="table">
     <thead>
-      <tr>
+      <tr class="text-center">
         <th scope="col">Border</th>
         <th scope="col">Meals</th>
+        <th scope="col">Chargeable Meals</th>
         <th scope="col">Deposite</th>
         <th scope="col">Meal Cost</th>
         <th scope="col">Extra Cost</th>
@@ -163,9 +164,10 @@
     </thead>
     <tbody>
       {#each bordersInfo as border, index (index)}
-        <tr>
+        <tr class="text-center">
           <td>{border.border.name}</td>
           <td>{border.meals}</td>
+          <td>{border.chargeable_meals}</td>
           <td>{border.deposit}</td>
           <td>{border.meal_cost}</td>
           <td>{border.extra_cost}</td>
