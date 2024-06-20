@@ -29,6 +29,7 @@
   let users = [];
   let mealTypes = [];
   let periods = [];
+  let offType = 0;
 
   let mealData = {
     id: 0,
@@ -143,6 +144,13 @@
       },
     });
     mealTypes = await response.json();
+
+    mealTypes.forEach((type) => {
+      if (type.name == "Off") {
+        offType = type.id;
+        console.log(offType);
+      }
+    });
   }
 
   async function loadAllPeriods() {
@@ -253,6 +261,7 @@
               id="amount"
               class="form-control"
               bind:value={mealData.amount}
+              disabled={offType == mealData.type}
             />
           </div>
           <br />
@@ -319,7 +328,7 @@
           <div>
             <label for="user">Border</label>
             <select
-              name="user"
+              name="range-user"
               class="form-control"
               bind:value={rangeMealData.userId}
             >
@@ -332,7 +341,7 @@
           <div>
             <label for="type">Type</label>
             <select
-              name="type"
+              name="range-type"
               class="form-control"
               bind:value={rangeMealData.type}
             >
@@ -346,10 +355,11 @@
             <label for="amount">Amount</label>
             <input
               type="text"
-              name="amount"
+              name="range-amount"
               id="amount"
               class="form-control"
               bind:value={rangeMealData.amount}
+              disabled={offType == rangeMealData.type}
             />
           </div>
           <br />
@@ -378,7 +388,7 @@
           <div>
             <label for="period">Period</label>
             <select
-              name="period"
+              name="range-period"
               class="form-control"
               bind:value={rangeMealData.period}
             >
