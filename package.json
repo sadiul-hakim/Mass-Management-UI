@@ -19,6 +19,7 @@
     "svelte": "^3.55.0"
   },
   "dependencies": {
+    "@canvasjs/charts": "^3.10.13",
     "bootstrap-icons": "^1.11.3",
     "sirv-cli": "^2.0.0",
     "svelte-spa-router": "^4.0.1",

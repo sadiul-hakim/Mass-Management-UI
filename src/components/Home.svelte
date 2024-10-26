@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { Authorization } from "../store/stores";
   import { push } from "svelte-spa-router";
+  import CanvasJS from '@canvasjs/charts';
   import {
     domain_api,
     home_border_info,
@@ -50,7 +51,6 @@
     });
 
     borderInfo = await response.json();
-    console.log(borderInfo);
     bills = borderInfo.bills;
 
     console.log(tableHeaders);
@@ -69,7 +69,7 @@
       info = borderInfo[i];
       dataArray[i] = {
         label: info.name,
-        y: info["Border Deposit"],
+        y: info["Deposit"],
       };
     }
 
